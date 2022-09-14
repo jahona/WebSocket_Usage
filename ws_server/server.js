@@ -25,9 +25,22 @@ const wss = new WebSocketServer({
 });
 
 wss.on('connection', function connection(ws) {
-    ws.on('message', function message(data) {
+    ws.on('message', function message(data, isBinary) {
         console.log('received: %s', data);
+
+        // TODO: 유저 입장했을 때 알림 이벤트 추가
+
+        wss.clients.forEach(function each(client) {
+            if (client.readyState === WebSocket.OPEN) {
+                if (client !== ws) {
+                    client.send(JSON.stringify({
+                        type: 'received_otherUser_message',
+                        content: data.toString(),
+                    }), { binary: isBinary });
+                }
+            }            
+        });
     });
-  
-    ws.send('something');
+    
+    ws.send('Completed Connection');
 });
