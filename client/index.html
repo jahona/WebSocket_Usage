@@ -3,7 +3,7 @@
         <!-- CSS only -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
         <!-- JavaScript Bundle with Popper -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script> -->
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
         <link href="./public/css/index.css" rel="stylesheet">
     </head>
@@ -14,14 +14,14 @@
                     <div class="card">
                         <div class="chat">
                             <div class="chat-history">
-                                <ul class="">
+                                <ul id="chat-ul" class="mb-0">
                                     <li class="clearfix">
                                         <div class="message-data text-right">
                                             <span class="message-data-time">10:10 AM, Today</span>
                                         </div>
                                         <div class="message other-message float-right"> Hi Aiden, how are you? How is the project coming along? </div>
                                     </li>
-                                    <li class="clearfix">
+                                    <li class="clearfix">   
                                         <div class="message-data">
                                             <span class="message-data-time">10:10 AM, Today</span>
                                         </div>
@@ -35,7 +35,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-send"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" placeholder="Enter text here...">                                    
+                                    <input id="message-input" type="text" class="form-control" placeholder="Enter text here...">                                    
                                 </div>
                             </div>
                         </div>
@@ -45,5 +45,23 @@
         </div>
 
         <script src="./public/js/socket.js"></script>
+        <script src="./src/components/message.js"></script>
+        <script>
+            document.getElementById('message-input').addEventListener('keypress', function sendMessage(e) {
+                if (e.key === 'Enter') {
+                    let messageContent = e.target.value;
+
+                    ws_sendMessage(messageContent);
+                    e.target.value = '';
+                }
+            });
+
+            window.addEventListener('receiveOtherUserMessage', receiveOtherUserMessage);
+            function receiveOtherUserMessage(e) {
+                console.log('receiveOtherUserMessage: ', e.detail);
+                
+                // TODO: 채팅 영역에 DOM 추가
+            }
+        </script>
     </body>
 </html>
