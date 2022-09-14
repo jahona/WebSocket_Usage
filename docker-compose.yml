@@ -1,0 +1,13 @@
+services:
+  nodeapp:
+    build: "./ws_server"
+    container_name: "ws_server"
+    working_dir: "/app"
+    ports:
+    - "8080:8080"
+
+  web:
+    build: "./client"
+    container_name: "webapp"
+    ports:
+    - "3000:80"
